@@ -212,3 +212,5 @@ This project was inspired by the following resources:
 * [Sneat Admin Template](https://github.com/themeselection/sneat-html-admin-template)
 
 Feel free to contact me on support@hassankhurram.com if you have any questions or suggestions or raise an issue if needed.
+
+This code is a fork of [hassankhurram/simplewebjs](https://github.com/hassankhurram/simplewebjs)
