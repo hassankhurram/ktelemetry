@@ -1,0 +1,17 @@
+{
+    "ADMINISTRATOR":[
+        "ADMINISTRATOR",
+        "CAN_VIEW_PROFILE_OF_OTHERS",
+        "CAN_EDIT_PROFILE_OF_OTHERS",
+        "CAN_VIEW_PROFILE",
+        "CAN_EDIT_PROFILE"
+    ],
+    "MODERATOR":[
+        "CAN_VIEW_PROFILE_OF_OTHERS",
+        "CAN_VIEW_PROFILE",
+        "CAN_EDIT_PROFILE"
+    ],
+    "MEMBER":[
+        "CAN_VIEW_PROFILE"
+    ]
+}

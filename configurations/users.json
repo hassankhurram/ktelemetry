@@ -1,0 +1,11 @@
+[
+    {
+        "id": 1,
+        "email":"admincompliance@mailinator.com",
+        "password":"$2b$10$MWIQp0LhNysFRawesH.CE.NbeEH6x19ype2Mhb6ufI20Qj5e55BjC",
+        "user_name": "Hassan Khurram",
+        "designation": "Admin",
+        "profile_image": "/assets/images/faces/face1.jpg",
+        "roles":["ADMINISTRATOR","MODERATOR","MEMBER"]
+    }
+]

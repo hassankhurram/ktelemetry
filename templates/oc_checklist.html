@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="initial-scale=1, width=device-width"  charset="UTF-8" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <title>CHECKLIST</title>
+
+  <style type="text/css">
+    @media print {
+      html, body {
+        height: 95%;
+        margin: 0;
+        padding: 0;
+      }
+    
+      .main-container {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        height: 95vh; /* Ensures full-page height */
+        position: relative;
+        page-break-before: auto;
+        page-break-inside: avoid; /* Prevents breaking within container */
+      }
+    
+      .container {
+        flex-grow: 1;
+        padding-bottom: 1px; /* Ensures space for footer */
+      }
+    
+      .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #00569e;
+        color: white;
+        text-align: center;
+        padding-top: 10px;
+        page-break-before: avoid;
+      }
+    
+      .page-break {
+        page-break-after: always;
+        height: 1px; /* Prevents unnecessary spacing */
+        margin: 0;
+        padding: 0;
+        visibility: hidden;
+      }
+    }
+    
+    
+    
+    @media screen and (max-width: 1366px) {
+      body {
+          width: 1080px; /* Keeps the desktop width */
+      }
+    }
+
+    body {
+      font-family: Lato, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      justify-content: center;  /* Centers horizontally */
+      align-items: center;  /* Centers vertically */
+      min-height: 100vh;  /* Ensures full-page height */
+
+    }
+
+    .header {
+      background-color: #fff;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      gap: 100px;
+      align-items: flex-end;
+      border-bottom: 2px solid #00569e;
+      padding-bottom: 5px;
+    }
+
+    .header img {
+      height: 70px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .header-title {
+      font-size: 18px;
+      flex-grow: 1;
+      text-align: right;
+      background-color: #00569e;
+      padding-right: 20px;
+      margin-left: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      clip-path: polygon(20px 0%, 100% 0%, 100% 100%, 20px 100%, 0% 50%);
+      color: white;
+      /* Fix */
+    }
+
+
+    .container {
+      background: white;
+      padding-top: 30px;
+      padding-left: 20px;
+      padding-right: 20px;
+      max-width: 800px;
+      margin: 20px auto;
+      border-radius: 5px;
+      /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); */
+    }
+
+    .main-container {
+      background: white;
+      max-width: 840px;
+      width: 90%; /* Ensures responsiveness */
+      margin: 20px auto;
+      border-radius: 5px;
+      /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); */
+    }
+
+    h1 {
+      color: #00569e;
+      text-align: left;
+    }
+
+    .section-title {
+      font-weight: normal;
+      margin-top: 20px;
+      border-bottom: 2px solid #00569e;
+      padding-bottom: 5px;
+      font-size: 18px;
+    }
+
+    .section-title2 {
+      font-weight: bold;
+      margin-top: 20px;
+      margin-bottom: 40px;
+      font-size: 18px;
+    }
+
+    label {
+      min-width: 8%;
+      font-size: 16px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0 10px;
+      border: 0px solid #ccc;
+      border-radius: 4px;
+      background-color: #f5f5f5;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: baseline;
+      /* Fix */
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .checkbox-group input {
+      margin-right: 5px;
+    }
+
+    .table {
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .table th,
+    .table td {
+      padding-left: 20px;
+      padding-right: 20px;
+      text-align: center;
+      font-weight: normal;
+    }
+
+    .footer {
+      background-color: #00569e;
+      color: white;
+      text-align: center;
+      padding-top: 10px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+      height: 30px;
+      margin-top: 40px;
+    }
+
+    .upload-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .upload-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .upload-preview {
+      display: none;
+      max-width: 150px;
+      margin-top: 10px;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: none;
+    }
+
+    .delete-btn i {
+      color: red;
+      font-size: 20px;
+    }
+
+    .preview-container {
+      display: flex;
+
+      gap: 20px;
+    }
+
+    .button {
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color: #4cb656;
+      border-radius: 12px;
+      color: #fff;
+      border: 0px;
+    }
+
+    .button:hover {
+      cursor: pointer;
+    }
+
+    .button:active {
+      background-color: #2f6d35;
+    }
+
+  
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3); /* Translucent layer */
+      z-index: 98;
+      display: none; /* Initially hidden */
+    }
+    
+    #loader {
+      position: absolute;
+      top: 47%;
+      left: 49%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      border: 10px solid rgb(255, 255, 255);
+      border-top-color: #00569e;
+      border-radius: 50%;
+      animation: spin 2s linear infinite;
+      z-index: 99;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    
+  </style>
+</head>
+
+<body>
+  <div id="overlay">
+    <div id="loader" class="loader"></div>
+  </div>
+  <div class="main-container">
+    <div class="container">
+      <!-- Page 1 Content -->
+      <div></div>
+      <div class="header">
+        <img src="https://storage.googleapis.com/one-constellation-bucket-public/application/logooc.png"
+          alt="ONE Constellation Logo" />
+        <div class="header-title">CHECKLIST</div>
+      </div>
+
+      <p style="display: flex; justify-content: center">
+        Please complete the checklist and check the applicable boxes for the
+        domain/fund setup.
+      </p>
+
+      <div class="section-title2">Requestor Details</div>
+      <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 80px;
+            flex-wrap: wrap;
+            padding-right: 80px;
+          ">
+        <div style="
+              flex: 1 1 300px;
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+            ">
+          <label>Name: *</label>
+          <input type="text" id="name" required />
+          <label>Email: *</label>
+          <input type="email" id="email" required />
+      
+          <label>Date: *</label>
+          <input type="date" id="date" required />
+        </div>
+      </div>
+      <div style="border-bottom: 2px solid #00569e; margin-top: 40px"></div>
+
+      <div class="section-title2">1. Domain/Fund Information *</div>
+      <div style="max-width: 80%; margin-bottom: 5px">
+        <label>Domain/Fund Name:</label>
+        <input type="text" id="fundName" />
+        <label>Domain/Fund Jurisdiction/s:</label>
+        <input type="text" id="jurisdiction" />
+        
+
+        <label>Domain/Fund Code:</label>
+        <div style="padding-bottom: 5px">
+          <i style="font-size: 16px; font-weight: 550">(This can be also the Fund ISIN No)</i><br />
+          <input type="text" id="fundCode" />
+        </div>
+       
+        <!-- Domain/Fund Logo Upload -->
+        <div id="fundLogo_container" style="margin-bottom: 20px;">
+          <div class="upload-group">
+            <label>Domain/Fund Logo</label>
+            <button onclick="addFileInput('fundLogo')" style="background: none; border: none; cursor: pointer">
+              <i class="fas fa-cloud-arrow-up" style="color: #4cb656; font-size: 24px"></i>
+            </button>
+            <button onclick="addFileInput('fundLogo')" class="add-more-btn">
+              Add More
+            </button>
+            <span id="fundLogo_name">No file chosen</span>
+          </div>
+          <div id="fundLogo_preview_container" class="preview-container"></div>
+        </div>
+      </div>
+
+      <div class="checkbox-group">
+        <label style="grid-column: span 2;">Domain/Fund Type:</label>
+      
+        <div>
+          <input type="checkbox" id="typeTraditional" />
+          <label for="typeTraditional">Traditional</label>
+        </div>
+      
+        <div>
+          <input type="checkbox" id="typeDigital" onclick="toggleDigitalField()" />
+          <label for="typeDigital">Digital</label>
+          <div id="digitalCurrencyField" style="display: none;">
+            <textarea id="tradingDigitalCurrency" placeholder="Please mention digital currency"></textarea>
+          </div>
+        </div>
+            <!-- Digital Currency Field (Hidden by Default) -->
+            
+      
+        <div>
+          <input type="checkbox" id="typeHybrid" />
+          <label for="typeHybrid">Hybrid</label>
+        </div>
+      
+        <div>
+          <input type="checkbox" id="typeOthers" />
+          <label for="typeOthers">Others</label>
+          <input type="text" id="otherType" placeholder="Specify.." />
+        </div>
+      
+    
+      </div>
+      
+  
+      <div style="padding-bottom: 5px">
+
+        <label>Class Type (If applicable):</label>
+        <div style="padding-right: 40px">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Class Type</th>
+                <th>Currency</th>
+                <th>ISIN No (If Any)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" id="classType1" /></td>
+                <td><input type="text" id="currency1" /></td>
+                <td><input type="text" id="isin1" /></td>
+              </tr>
+              <tr>
+                <td><input type="text" id="classType2" /></td>
+                <td><input type="text" id="currency2" /></td>
+                <td><input type="text" id="isin2" /></td>
+              </tr>
+              <tr>
+                <td><input type="text" id="classType3" /></td>
+                <td><input type="text" id="currency3" /></td>
+                <td><input type="text" id="isin3" /></td>
+              </tr>
+              <tr>
+                <td><input type="text" id="classType4" /></td>
+                <td><input type="text" id="currency4" /></td>
+                <td><input type="text" id="isin4" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="padding-right: 80px">
+        <label>Domain/Fund Description:</label><br />
+        <i style="font-size: 11px; font-weight: 550">
+          The description will be displayed in the onboarding portal</i>
+        <textarea rows="4" id="fundDescriptionTextArea"></textarea>
+      </div>
+    </div>
+    <div class="footer">
+      &copy; 2025 One Constellation - All Rights Reserved
+    </div>
+  
+  </div>
+
+  <div class="page-break"></div>
+
+
+  <div class="main-container">
+    <div class="container">
+      <!-- Page 2 Content (Same Structure) -->
+      <div class="header">
+        <img src="https://storage.googleapis.com/one-constellation-bucket-public/application/logooc.png"
+          alt="ONE Constellation Logo" />
+        <div class="header-title">CHECKLIST</div>
+      </div>
+
+      <p style="display: flex; justify-content: left">
+        Please let us know which modules are required for the customer
+        onboarding setup:
+      </p>
+
+      <div class="section-title2">
+        2. Customer Onboarding Setup (IF Required)
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <div class="checboxsecindpage">
+          <input type="checkbox" style="margin-right: 5px" id="faceVerification" />
+          Face Verification
+        </div>
+        <div class="checboxsecindpage">
+          <input type="checkbox" style="margin-right: 5px" id="vcip" /> VCIP
+          (Video Based Customer Identification Process )
+        </div>
+        <div class="checboxsecindpage">
+          <input type="checkbox" style="margin-right: 5px" id="pennyDrop" />
+          Penny Drop Verification (Applicable for India Juridction only)
+        </div>
+
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+        <div style="display: flex; align-items: center">
+          <input type="checkbox" style="margin-right: 5px" id="individual" />
+          Individual Onboarding module
+        </div>
+        <div style="display: flex; align-items: center">
+          <input type="checkbox" style="margin-right: 5px" id="corporate" />
+          Corporate Onboarding module
+        </div>
+      </div>
+
+      <div style="
+            padding-left: 40px;
+            padding-right: 40px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding-bottom: 40px;
+          ">
+        <div style="
+              display: flex;
+              flex-direction: column;
+              gap: 20px;
+              margin-top: 20px;
+              justify-content: space-around;
+            ">
+          <div style="display: flex; align-items: center">
+            <input type="checkbox" style="margin-right: 5px" id="privateCompany" />
+            Private Company
+          </div>
+          <div style="display: flex; align-items: center">
+            <input type="checkbox" style="margin-right: 5px" id="trustee" />
+            Trustee
+          </div>
+          <div style="display: flex; align-items: center">
+            <input type="checkbox" style="margin-right: 5px" id="partnership" />
+            Partnership
+          </div>
+          <div style="display: flex; align-items: center">
+            <input type="checkbox" style="margin-right: 5px" id="llc" /> LLC
+          </div>
+        </div>
+        <div style="
+              display: flex;
+              flex-direction: column;
+              gap: 20px;
+              margin-top: 20px;
+              justify-content: space-around;
+            ">
+          <div style="display: flex; align-items: center">
+            <input type="checkbox" style="margin-right: 5px" id="llp" /> LLP
+          </div>
+          <div style="display: flex; align-items: center">
+            <input type="checkbox" style="margin-right: 5px" id="selfManaged" />
+            Self-Managed Super Fund
+          </div>
+          <div style="display: flex; align-items: center">
+            <input type="checkbox" style="margin-right: 5px" id="regulated" />
+            Regulated Pool Investment Vehicle
+          </div>
+          <div style="display: flex; align-items: center">
+            <input type="checkbox" style="margin-right: 5px" id="nonRegulated" />
+            Non- Regulated Pool Investment Vehicle
+          </div>
+        </div>
+        <div style="
+              display: flex;
+              flex-direction: column;
+              gap: 20px;
+              margin-top: 20px;
+              justify-content: flex-start;
+            ">
+          <div style="display: flex; align-items: center">
+            <input type="checkbox" style="margin-right: 5px" id="publicListed" />
+            Public & Listed Companies
+          </div>
+
+          <div style="display: flex; align-items: start">
+            <input type="checkbox" style="margin-right: 5px" id="otherCheckbox" />
+            Others
+            <textarea style="
+                  width: 115px;
+                  margin-left: 10px;
+                  margin: 0 10px 0;
+                  resize: vertical;
+                  font-style: lato;
+                " placeholder="Specify.." id="entityTypeOthersTextArea"></textarea>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; align-items: center">
+          <input type="checkbox" style="margin-right: 5px" id="jointAccount" />Joint Account Module
+        </div>
+        <div style="display: flex; align-items: center">
+          <input type="checkbox" style="margin-right: 5px" id="governmentIntegration" />
+          Government Integrations
+        </div>
+      </div>
+
+      <div style="
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding-left: 40px;
+          ">
+        <div style="display: flex; align-items: center">
+          <input type="checkbox" style="margin-right: 5px" id="signpass" />
+          Singpass (MyInfo /Corppass)
+        </div>
+        <div style="display: flex; align-items: center">
+          <input type="checkbox" style="margin-right: 5px" id="panAadhar" />
+          PAN / Adhaar
+        </div>
+      </div>  
+
+      <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 2px;">
+
+        <div style="display: flex; align-items: center">
+          <input type="checkbox" style="margin-right: 5px" id="documentDigitalisation" />Document Digitalisation
+          <br />
+        </div>
+
+        <i style="font-size: 16px; font-weight: 550; padding-bottom: 20px">Please provide the final copies of the
+          documents which require
+          digitalisation
+        </i>
+      </div>
+
+      <div class="upload-container">
+        <!-- Subscription Agreement Upload -->
+        <div id="subscriptionAgreement_container">
+          <div class="upload-group">
+            <input type="checkbox" id="checkSubscriptionAgreement" />
+            <label for="checkSubscriptionAgreement">Subscription Agreement</label>
+            <button onclick="addFileInput('subscriptionAgreement')"
+              style="background: none; border: none; cursor: pointer">
+              <i class="fas fa-cloud-arrow-up" style="color: #4cb656; font-size: 24px"></i>
+            </button>
+            <button onclick="addFileInput('subscriptionAgreement')" class="add-more-btn">
+              Add More
+            </button>
+            <span id="subscriptionAgreement_name">No file chosen</span>
+          </div>
+          <div id="subscriptionAgreement_preview_container" class="preview-container"></div>
+        </div>
+
+        <!-- Additional Subscription Upload -->
+        <div id="additionalAgreement_container">
+          <div class="upload-group">
+            <input type="checkbox" id="checkAdditionalAgreement" />
+            <label for="checkAdditionalAgreement">Additional Subscription</label>
+            <button onclick="addFileInput('additionalAgreement')"
+              style="background: none; border: none; cursor: pointer">
+              <i class="fas fa-cloud-arrow-up" style="color: #4cb656; font-size: 24px"></i>
+            </button>
+            <button onclick="addFileInput('additionalAgreement')" class="add-more-btn">
+              Add More
+            </button>
+            <span id="additionalAgreement_name">No file chosen</span>
+          </div>
+          <div id="additionalAgreement_preview_container" class="preview-container"></div>
+        </div>
+
+        <!-- Redemption Document Upload -->
+        <div id="redemptionDocument_container">
+          <div class="upload-group">
+            <input type="checkbox" id="checkRedemptionDocument" />
+            <label for="checkRedemptionDocument">Redemption Document</label>
+            <button onclick="addFileInput('redemptionDocument')"
+              style="background: none; border: none; cursor: pointer">
+              <i class="fas fa-cloud-arrow-up" style="color: #4cb656; font-size: 24px"></i>
+            </button>
+            <button onclick="addFileInput('redemptionDocument')" class="add-more-btn">
+              Add More
+            </button>
+            <span id="redemptionDocument_name">No file chosen</span>
+          </div>
+          <div id="redemptionDocument_preview_container" class="preview-container"></div>
+        </div>
+
+
+        <div id="others_container">
+          <div class="upload-group">
+            <input type="checkbox" id="checkOthers" />
+            <label for="checkOthers">Others</label>
+            <textarea style="width: 200px; margin-left: 10px; margin: 0 10px 0; resize: vertical; font-style: lato;" placeholder="Specify.." id="otherDocumentsTextArea"></textarea>
+            <button onclick="addFileInput('others')"
+              style="background: none; border: none; cursor: pointer">
+              <i class="fas fa-cloud-arrow-up" style="color: #4cb656; font-size: 24px"></i>
+            </button>
+            <button onclick="addFileInput('others')" class="add-more-btn">
+              Add More
+            </button>
+            <span id="others_name">No file chosen</span>
+          </div>
+          <div id="others_preview_container" class="preview-container"></div>
+        </div>
+
+        <div id="referenceDocuments_container">
+          <div class="upload-group" style="padding-top: 40px; display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" id="referenceDocumentCheck" />
+            <label for="referenceDocumentCheck" style="margin-bottom: 0;">Reference Documents</label>
+          </div>
+        
+          <p style="font-weight: 400; margin-top: 5px;">
+            Please upload the documents you want to include under the Reference Documents section, 
+            such as PPM or Fund Fact Sheets.
+          </p>
+        
+          <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+            <button onclick="addFileInput('referenceDocuments')" style="background: none; border: none; cursor: pointer;">
+              <i class="fas fa-cloud-arrow-up" style="color: #4cb656; font-size: 24px"></i>
+            </button>
+            <button onclick="addFileInput('referenceDocuments')" class="add-more-btn">
+              Add More
+            </button>
+            <span id="referenceDocuments_name">No file chosen</span>
+          </div>
+        
+          <div id="referenceDocuments_preview_container" class="preview-container" style="margin-top: 10px;"></div>
+        </div>
+
+      </div>
+    </div>
+    <div class="footer">
+      &copy; 2025 One Constellation - All Rights Reserved
+    </div>
+  </div>
+  <div class="page-break"></div>
+
+
+
+      
+      <div class="main-container">
+        <div class="container">
+          <!-- Page 3 Content (Same Structure) -->
+          <div class="header">
+            <img src="https://storage.googleapis.com/one-constellation-bucket-public/application/logooc.png"
+              alt="ONE Constellation Logo" />
+            <div class="header-title">CHECKLIST</div>
+          </div>
+
+      <div class="section-title2">
+        3. Management Portal Access (IF Required)
+      </div>
+      <div style="display: flex; align-items: center">
+        <input type="checkbox" style="margin-right: 5px" id="investorManager" />
+        <label>Investor Manager Entity Name :</label>
+  
+        <textarea style="
+              width: 250px;
+              margin-left: 10px;
+              margin: 0 10px 0;
+              resize: vertical;
+              font-style: lato;
+            " placeholder="Specify.." id="investorManagerEntityTextArea" rows="4"></textarea>
+      </div>
+      <div style="display: flex; align-items: start; padding-top: 20px">
+        <input type="checkbox" style="margin-right: 5px" id="imReadEmailsCheck" />
+        IM Read Only Access to the management portal : <br />
+        Please provide us with email addresses who require the read only
+        access
+      </div>
+      <div style="padding-top: 20px">
+        <textarea style="
+              width: 80%;
+              margin-left: 10px;
+              margin: 0 10px 0;
+              resize: vertical;
+              font-style: lato;
+            " placeholder="Specify.." id="imReadEmailsTextArea" rows="5"></textarea>
+      </div>
+      <div id="entityLogo_container">
+        <div class="upload-group" style="padding-top: 40px">
+          <input type="checkbox" id="entity_logo_check" />
+          <label for="entity_logo_check">Entity Logo</label>
+          <button onclick="addFileInput('entityLogo')" style="background: none; border: none; cursor: pointer">
+            <i class="fas fa-cloud-arrow-up" style="color: #4cb656; font-size: 24px"></i>
+          </button>
+          <button onclick="addFileInput('entityLogo')" class="add-more-btn">
+            Add More
+          </button>
+          <span id="entityLogo_name">No file chosen</span>
+        </div>
+        <div id="entityLogo_preview_container" class="preview-container"></div>
+      </div>
+      <div style="border-bottom: 2px solid #00569e; margin-top: 40px"></div>
+      <div style="display: flex; align-items: center; padding-top: 40px" id="verificationCheck">
+        <input type="checkbox" style="margin-right: 20px" id="verified" /> I
+        have verified the requirements of the clients and have provided the
+        necessary information for One Constellation team to setup the
+        fund/account.
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; padding-top: 40px">
+        <button class="button" onclick="sendEmail()" id="submitBtn">Send Request</button>
+      </div>
+    </div>
+    <div class="footer">
+      &copy; 2025 One Constellation - All Rights Reserved
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+    let uploadedFiles = {}; // Track files for each section
+    let missingFields = [];
+    const maxFiles = 5;
+
+    for (let i of [
+      "fundLogo",
+      "subscriptionAgreement",
+      "additionalAgreement",
+      "redemptionDocument",
+      "referenceDocuments",
+      "entityLogo",
+      "otherDocuments",
+    ]) {
+      uploadedFiles[i] = [];
+    }
+
+    function addFileInput(section) {
+      if (!uploadedFiles[section]) {
+        uploadedFiles[section] = [];
+      }
+
+      if (uploadedFiles[section].length >= maxFiles) {
+        alert(`You can only upload up to ${maxFiles} files.`);
+        return;
+      }
+
+      const input = document.createElement("input");
+      input.type = "file";
+      input.style.display = "none";
+      input.onchange = function () {
+        handleFileUpload(section, this);
+      };
+
+      document.getElementById(section + "_container").appendChild(input);
+      input.click();
+    }
+
+    function handleFileUpload(section, inputElement) {
+      const files = Array.from(inputElement.files);
+      const allowedTypes = ["image/png", "image/jpeg", "application/pdf"];
+      const previewContainer = document.getElementById(
+        section + "_preview_container"
+      );
+      const fileNameContainer = document.getElementById(section + "_name");
+      const checkbox = document.getElementById(section + "_check");
+
+      if (uploadedFiles[section].length + files.length > maxFiles) {
+        alert(`Only ${maxFiles} files can be uploaded per section.`);
+        return;
+      }
+
+      files.forEach((file) => {
+        if (!allowedTypes.includes(file.type)) {
+          alert("Only PNG, JPEG, and PDF files are allowed.");
+          return;
+        }
+
+        uploadedFiles[section].push(file);
+
+        const fileId = `${section}_file_${uploadedFiles[section].length}`;
+        const fileElement = document.createElement("div");
+        fileElement.classList.add("file-item");
+        fileElement.id = fileId;
+
+        if (file.type.startsWith("image/")) {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            fileElement.innerHTML = `
+                        <img src="${event.target.result}"
+                            style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
+                        <button onclick="deleteFile('${section}', '${fileId}')"
+                            style="background: none; border: none; cursor: pointer; color: red; font-size: 18px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+          };
+          reader.readAsDataURL(file);
+        } else {
+          fileElement.innerHTML = `
+                    <span style="font-size: 14px; color: #333; margin-right: 10px;">${file.name}</span>
+                    <button onclick="deleteFile('${section}', '${fileId}')"
+                        style="background: none; border: none; cursor: pointer; color: red; font-size: 18px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+        }
+
+        previewContainer.appendChild(fileElement);
+      });
+
+      fileNameContainer.textContent = `${uploadedFiles[section].length} file(s) selected`;
+
+      // ✅ Automatically check the corresponding checkbox if files are uploaded
+      if (checkbox) {
+        checkbox.checked = true;
+      }
+    }
+
+    function deleteFile(section, fileId) {
+      const fileElement = document.getElementById(fileId);
+      const checkbox = document.getElementById(section + "_check");
+
+      if (fileElement) {
+        fileElement.remove();
+      }
+
+      uploadedFiles[section] = uploadedFiles[section].filter(
+        (_, index) => fileId !== `${section}_file_${index + 1}`
+      );
+
+      document.getElementById(
+        section + "_name"
+      ).textContent = `${uploadedFiles[section].length} file(s) selected`;
+
+      // ✅ Automatically uncheck the checkbox if no files are left
+      if (checkbox && uploadedFiles[section].length === 0) {
+        checkbox.checked = false;
+      }
+    }
+
+    function convertToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(",")[1]); // Extract base64 content
+        reader.onerror = (error) => reject(error);
+      });
+    }
+
+    function repopulateForm(data) {
+      if (!data) return;
+
+      console.log("Repopulating form with data:", data); // Debugging log
+
+      // 1. Populate checkboxes
+      let checkboxes = [
+        "referenceDocumentCheck",
+        "investorManager",
+        "imReadEmailsCheck",
+        "entity_logo_check",
+        "verified",
+        "faceVerification",
+        "vcip",
+        "pennyDrop",
+        "individual",
+        "corporate",
+        "privateCompany",
+        "trustee",
+        "partnership",
+        "llc",
+        "llp",
+        "selfManaged",
+        "regulated",
+        "nonRegulated",
+        "publicListed",
+        "otherCheckbox",
+        "jointAccount",
+        "governmentIntegration",
+        "signpass",
+        "panAadhar",
+        "documentDigitalisation",
+        "typeTraditional",
+        "typeDigital",
+        "typeHybrid",
+        "typeOthers",
+        "checkSubscriptionAgreement",
+        "checkAdditionalAgreement",
+        "checkRedemptionDocument",
+        "checkOthers",
+        
+      ];
+
+      checkboxes.forEach((id) => {
+        let element = $("#" + id);
+        if (element.length) {
+          element.prop("checked", data[id] === "true" || data[id] === true);
+        } else {
+          console.warn(`Checkbox with ID '${id}' not found.`);
+        }
+      });
+
+      let typeDigital = $("#typeDigital").prop("checked");
+
+      if(typeDigital){
+        $("#digitalCurrencyField").css("display", "flex");
+      }
+
+      // 2. Populate text fields (for Name, Email, etc.)
+      let textFields = [
+        "name",
+        "email",
+        "date",
+        "fundName",
+        "jurisdiction",
+        "fundCode",
+        "otherType",
+      ];
+      textFields.forEach((id) => {
+        let element = $("#" + id);
+        if (element.length) {
+          element.val(data[id] || "");
+        } else {
+          console.warn(`Text field with ID '${id}' not found.`);
+        }
+      });
+
+      // 3. Populate class types (table input fields)
+      if (data.classTypes && Array.isArray(data.classTypes)) {
+        data.classTypes.forEach((classObj, index) => {
+          $("#classType" + (index + 1)).val(classObj.classType || "");
+          $("#currency" + (index + 1)).val(classObj.currency || "");
+          $("#isin" + (index + 1)).val(classObj.isin || "");
+        });
+      }
+
+      // 4. Populate textareas (for descriptions and custom fields)
+      let textareaMappings = {
+        tradingDigitalCurrency: "#tradingDigitalCurrency",
+        investorManagerEntityTextArea: "#investorManagerEntityTextArea",
+        imReadEmailsTextArea: "#imReadEmailsTextArea",
+        fundDescriptionTextArea: "#fundDescriptionTextArea",
+        entityTypeOthersTextArea: "#entityTypeOthersTextArea",
+        otherDocumentsTextArea: "#otherDocumentsTextArea",
+      };
+
+      Object.keys(textareaMappings).forEach((key) => {
+        let selector = textareaMappings[key];
+        let element = $(selector);
+        if (element.length) {
+          element.val(data[key] || "");
+        } else {
+          console.warn(
+            `Textarea with key '${key}' not found at selector '${selector}'.`
+          );
+        }
+      });
+
+      // 5. Repopulate uploaded files and enable checkboxes if files exist
+      if (data.files) {
+        Object.keys(data.files).forEach((section) => {
+          let fileData = data.files[section];
+
+          if (fileData.length > 0) {
+            // Enable corresponding checkbox if available
+            let checkboxId = section + "_check";
+            let checkbox = $("#" + checkboxId);
+            if (checkbox.length) {
+              checkbox.prop("checked", true);
+            }
+
+            let fileNameElement = $("#" + section + "_name");
+            let previewContainer = $("#" + section + "_preview_container");
+
+            // Show file names
+            let fileNames = fileData.map((file) => file.newName).join(", ");
+            fileNameElement.text(fileNames);
+
+            // Display file preview
+            previewContainer.empty();
+            fileData.forEach((file, index) => {
+              let fileId = `${section}_file_${index + 1}`;
+              let fileElement = $("<div>")
+                .addClass("file-item")
+                .attr("id", fileId);
+
+              previewContainer.append(fileElement);
+            });
+          }
+        });
+      }
+
+      console.log("Form repopulation complete.");
+    }
+
+    function toggleDigitalField() {
+        let checkbox = document.getElementById("typeDigital");
+        let digitalField = document.getElementById("digitalCurrencyField");
+        
+        if (checkbox.checked) {
+            digitalField.style.display = "flex"; // Show field
+     
+        } else {
+            digitalField.style.display = "none"; // Hide field
+          
+        }
+    }
+
+    function highlightField(id) {
+      console.log(id)
+      $("#" + id).css("border", "2px solid red"); // Highlight missing fields in red
+
+      const offset = 20; // Offset in pixels
+      $('html, body').animate({
+          scrollTop: $("#" + id).offset().top - offset
+      }, 1000);
+      //alert("Please fill in the required forms")
+      return null;
+    }
+
+    function sendEmail() {
+      // Collect checkbox values from first script
+      $("input, textarea").css("border", "1px solid #ccc"); 
+
+      let referenceDocumentCheck = document.getElementById(
+        "referenceDocumentCheck"
+      ).checked;
+      let checkSubscriptionAgreement = document.getElementById(
+        "checkSubscriptionAgreement"
+      ).checked;
+      let checkAdditionalAgreement = document.getElementById(
+        "checkAdditionalAgreement"
+      ).checked;
+      let checkRedemptionDocument = document.getElementById(
+        "checkRedemptionDocument"
+      ).checked;
+      let checkOthers = document.getElementById("checkOthers").checked;
+
+      let investorManager =
+        document.getElementById("investorManager").checked;
+      let imRead = document.getElementById("imReadEmailsCheck").checked;
+      let entity_logo_check =
+        document.getElementById("entity_logo_check").checked;
+      let verified = document.getElementById("verified").checked;
+      let investorManagerEntityTextArea = document
+        .getElementById("investorManagerEntityTextArea")
+        .value.trim();
+      let imReadEmailsTextArea = document
+        .getElementById("imReadEmailsTextArea")
+        .value.trim();
+      let files = [
+        { id: "reference_documents", nameId: "referenceDocument" },
+        { id: "entity_logo", nameId: "entitylogo" },
+      ];
+      let fileData = [];
+
+      // Collect data from second script
+      let faceVerification = $("#faceVerification").prop("checked");
+      let vcip = $("#vcip").prop("checked");
+      let pennyDrop = $("#pennyDrop").prop("checked");
+      let tradingDigitalCurrency = $("#tradingDigitalCurrency").val();
+      let individual = $("#individual").prop("checked");
+      let corporate = $("#corporate").prop("checked");
+      let privateCompany = $("#privateCompany").prop("checked");
+      let trustee = $("#trustee").prop("checked");
+      let partnership = $("#partnership").prop("checked");
+      let llc = $("#llc").prop("checked");
+      let llp = $("#llp").prop("checked");
+      let selfManaged = $("#selfManaged").prop("checked");
+      let regulated = $("#regulated").prop("checked");
+      let nonRegulated = $("#nonRegulated").prop("checked");
+      let publicListed = $("#publicListed").prop("checked");
+      let otherCheckbox = $("#otherCheckbox").prop("checked");
+
+      let jointAccount = $("#jointAccount").prop("checked");
+      let governmentIntegration = $("#governmentIntegration").prop("checked");
+      let signpass = $("#signpass").prop("checked");
+      let panAadhar = $("#panAadhar").prop("checked");
+      let documentDigitalisation = $("#documentDigitalisation").prop(
+        "checked"
+      );
+
+      // Collect data from third script
+      let entityTypeOthersTextArea = $("#entityTypeOthersTextArea").val();
+      let otherDocumentsTextArea = $("#otherDocumentsTextArea").val();
+      let name = $("#name").val();
+      let email = $("#email").val();
+      let date = $("#date").val();
+      let fundName = $("#fundName").val();
+      let jurisdiction = $("#jurisdiction").val();
+      let fundCode = $("#fundCode").val();
+      let typeTraditional = $("#typeTraditional").prop("checked");
+      let typeDigital = $("#typeDigital").prop("checked");
+      let typeHybrid = $("#typeHybrid").prop("checked");
+      let typeOthers = $("#typeOthers").prop("checked");
+      let otherType = $("#otherType").val();
+      let classType1 = $("#classType1").val();
+      let currency1 = $("#currency1").val();
+      let isin1 = $("#isin1").val();
+      let classType2 = $("#classType2").val();
+      let currency2 = $("#currency2").val();
+      let isin2 = $("#isin2").val();
+      let classType3 = $("#classType3").val();
+      let currency3 = $("#currency3").val();
+      let isin3 = $("#isin3").val();
+      let classType4 = $("#classType4").val();
+      let currency4 = $("#currency4").val();
+      let isin4 = $("#isin4").val();
+      let description = $("#fundDescriptionTextArea").val();
+      let fund_logo = uploadedFiles["fundLogo"];
+      // let file = fund_logo.files[0];
+
+   
+      // if (imRead && imReadEmailsTextArea === "") {
+      //     alert("Please provide email addresses for read-only access.");
+      //     return;
+      // }
+    
+      // if (!tradingDigitalCurrency) {
+      //    alert("Please specify the trading digital currency.");
+      //   return;
+      // }
+      
+         // Validation for required fields
+        // Required Field Validations 
+        if (!name) return highlightField("name");
+        if (!email) return highlightField("email");
+        if (!date) return highlightField("date");
+        if (!fundName) return highlightField("fundName");
+        if (!jurisdiction) return highlightField("jurisdiction");
+        if (!fundCode) return highlightField("fundCode");
+
+      if (!fund_logo || fund_logo.length === 0) {
+        return highlightField("fundLogo_container");
+      }
+
+      if (
+        referenceDocumentCheck &&
+        uploadedFiles.referenceDocuments &&
+        uploadedFiles.referenceDocuments.length === 0
+      ) {
+        return highlightField("referenceDocuments_container");
+      }
+      if (
+        entity_logo_check &&
+        uploadedFiles.entityLogo &&
+        uploadedFiles.entityLogo.length === 0
+      ) {
+        return highlightField("entityLogo_container");
+      }
+    
+      if (!verified) {
+        return highlightField("verificationCheck");
+        $("#verificationCheck").css("border", "2px solid red");
+        $("#verified").focus();
+      }
+      if (investorManager && investorManagerEntityTextArea === "") {
+        return highlightField("investorManager");
+      }
+
+      $("#overlay").show();
+      $("#submitBtn").attr("disabled", true);
+    
+      let formData = new FormData();
+      formData.append(
+        "referenceDocumentCheck",
+        JSON.stringify(referenceDocumentCheck)
+      );
+      formData.append("investorManager", investorManager);
+      formData.append("imReadEmailsCheck", imRead);
+      formData.append("entity_logo_check", entity_logo_check);
+      formData.append("verified", verified);
+      formData.append(
+        "investorManagerEntityTextArea",
+        investorManagerEntityTextArea
+      );
+      formData.append("imReadEmailsTextArea", imReadEmailsTextArea);
+      formData.append("entityTypeOthersTextArea", entityTypeOthersTextArea);
+      // Append files dynamically
+      for (let key in uploadedFiles) {
+        let files = uploadedFiles[key];
+        for (let file of files) {
+          formData.append(key, file); // Append files under their respective input name
+        }
+      }
+
+
+      formData.append("faceVerification", faceVerification);
+      formData.append("vcip", vcip);
+      formData.append("pennyDrop", pennyDrop);
+      formData.append("tradingDigitalCurrency", tradingDigitalCurrency);
+      formData.append("individual", individual);
+      formData.append("corporate", corporate);
+      formData.append("privateCompany", privateCompany);
+      formData.append("trustee", trustee);
+      formData.append("partnership", partnership);
+      formData.append("llc", llc);
+      formData.append("llp", llp);
+      formData.append("selfManaged", selfManaged);
+      formData.append("regulated", regulated);
+      formData.append("nonRegulated", nonRegulated);
+      formData.append("publicListed", publicListed);
+      formData.append("otherCheckbox", otherCheckbox);
+      formData.append("otherDocumentsTextArea", otherDocumentsTextArea);
+      formData.append("jointAccount", jointAccount);
+      formData.append("governmentIntegration", governmentIntegration);
+      formData.append("signpass", signpass);
+      formData.append("panAadhar", panAadhar);
+      formData.append("documentDigitalisation", documentDigitalisation);
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("date", date);
+      formData.append("fundName", fundName);
+      formData.append("jurisdiction", jurisdiction);
+      formData.append("fundCode", fundCode);
+      formData.append("typeTraditional", typeTraditional);
+      formData.append("typeDigital", typeDigital);
+      formData.append("typeHybrid", typeHybrid);
+      formData.append("typeOthers", typeOthers);
+      formData.append("otherType", otherType);
+      formData.append("fundDescriptionTextArea", description);
+      formData.append(
+        "classTypes",
+        JSON.stringify([
+          { classType: classType1, currency: currency1, isin: isin1 },
+          { classType: classType2, currency: currency2, isin: isin2 },
+          { classType: classType3, currency: currency3, isin: isin3 },
+          { classType: classType4, currency: currency4, isin: isin4 },
+        ])
+      );
+      formData.append("checkSubscriptionAgreement", checkSubscriptionAgreement);
+      formData.append("checkAdditionalAgreement", checkAdditionalAgreement);
+      formData.append("checkRedemptionDocument", checkRedemptionDocument);
+      formData.append("checkOthers", checkOthers);
+
+      //for (let pair of formData.entries()) {
+      //    console.log(pair[0], pair[1]);
+      // }
+
+      $.ajax({
+        //url: "http://100.100.15.155:7896/form/save",
+        url: "https://telemetry.one-constellation.com/form/save",
+        type: "POST",
+        data: formData,
+        processData: false, // Prevent jQuery from processing the data
+        contentType: false, // Let the browser set the content type
+        success: function (data) {
+          alert("Your checklist has been successfully submitted!");
+          $("#submitBtn").attr("disabled", false);
+          $("#overlay").hide();
+        },
+        error: function (error) {
+          alert("Error submitting the checklist.");
+          console.error("error");
+          $("#submitBtn").attr("disabled", false);
+          $("#overlay").hide();
+        },
+      });
+ 
+    }
+
+   
+
+    repopulateForm(/*{{{OC_CHECKLIST_FORMDATA}}}*/);
+   // repopulateForm({"referenceDocuments":"false","investorManager":"false","imRead":"false","entity_logo_check":"false","verified":"true","investorManagerEntity":"usdt","imReadEmails":"\"test 12.54\"","faceVerification":"false","vcip":"true","pennyDrop":"true","cryptoWallet":"false","tradingDigitalCurrency":"usdt","individual":"true","corporate":"true","privateCompany":"true","trustee":"false","partnership":"true","llc":"false","llp":"false","selfManaged":"false","regulated":"false","nonRegulated":"false","publicListed":"false","otherCheckbox":"true","otherSpecify":"test doc","jointAccount":"false","governmentIntegration":"true","signpass":"true","panAadhar":"false","documentDigitalisation":"false","name":"daf","email":"dev@heuristicsol.com","date":"2025-02-12","fundName":"asd","jurisdiction":"asd","fundCode":"sad","typeTraditional":"true","typeDigital":"true","typeHybrid":"false","typeOthers":"false","otherType":"","description":"yesterday","classTypes":[{"classType":"a","currency":"d","isin":"g"},{"classType":"b","currency":"e","isin":"h"},{"classType":"c","currency":"f","isin":"i"}],"files":{"entity_logo":[{"newName":"entity_logo_1_Goose Goose Duck.url"}],"fund_logo":[{"newName":"fund_logo_1_gh.png"}]}})
+  </script>
+
+</body>
+
+</html>

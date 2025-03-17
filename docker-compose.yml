@@ -1,0 +1,36 @@
+services:
+  simple_web_server:
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 1g
+          cpus: '2.0'
+    restart: unless-stopped
+    environment:
+      - PORT=${PORT}
+    build:
+      shm_size: 1g
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+      - ./tmp:/tmp
+    ports:
+      - "${PORT}:${PORT}"
+
+  # mongo_db:
+  #   image: mongo:latest
+  #   restart: unless-stopped
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=mongoUser
+  #     - MONGO_INITDB_ROOT_PASSWORD=mongoPass
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongo_data:/data/db
+
+volumes:
+  mongo_data:

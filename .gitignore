@@ -1,0 +1,6 @@
+deployment/envs/*.env
+node_modules/
+deployment/service_accounts/*
+.env
+service_account.json
+tmp/*
