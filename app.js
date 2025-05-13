@@ -49,7 +49,7 @@ app.use(function (req, res, next) {
   {
     return next();
   }
-  if(origin && whiteListedUrls.includes(origin))
+  if(true || origin && whiteListedUrls.includes(origin))
   {
     res.header("Access-Control-Allow-Origin", whiteListedUrls.find(x => x === origin));
     res.header(

@@ -59,6 +59,7 @@ export class LogsController extends BaseController {
                 "file_name": "components/domains.tsx",
                 "function_name": "getUsersDomains()"
             },
+            "override_user_ip": null,
             "log_severity": "INFO", 
             "time_in_msec": 1688114200000,
             "time_out_msec": 1688114260000
@@ -66,7 +67,7 @@ export class LogsController extends BaseController {
    */
 
   static async ingestLogs(req, res) {
-    const userIp = getUserIp(req);
+    const userIp = req.body.override_user_ip ?? getUserIp(req);
     //SlackBot.sendMessage("IP: " + userIp + " | Url: " + req.url);
 
     // Attach to req object
@@ -129,6 +130,7 @@ export class LogsController extends BaseController {
           .valid("INFO", "WARN", "ERROR", "FATAL")
           .optional()
           .default("INFO"),
+        override_user_ip: Joi.string().allow("").optional(),
         time_in_msec: Joi.number().required(),
         time_out_msec: Joi.number().required(),
         time_api_delay: Joi.number().optional().default(0),
