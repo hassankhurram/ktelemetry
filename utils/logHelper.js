@@ -206,14 +206,15 @@ async function insertDataBigQuery(datasetId, serviceName, region, log) {
    // console.log(`Inserted into table ${tableName}.`);
   } catch (error) {
     // Handle errors during the insertion
-    if (error.name === "PartialFailureError") {
-      console.error("Some rows failed to insert:");
-      for (const err of error.errors.errors) {
-        console.error("Insert error:", err);
-      }
-    } else {
-      console.error("Error inserting rows:", error);
-    }
+    // if (error.name === "PartialFailureError") {
+    //   console.error("Some rows failed to insert:");
+    //   for (const err of error.errors.errors) {
+    //     console.error("Insert error:", err);
+    //   }
+    // } else {
+    //   console.error("Error inserting rows:", error);
+    // }
+    console.log(error)
   }
 }
 
