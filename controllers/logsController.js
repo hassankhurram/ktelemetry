@@ -73,6 +73,7 @@ export class LogsController extends BaseController {
     // Attach to req object
     req.user_ip = userIp;
     res.event_name = req.body.event_name;
+    delete req.body.override_user_ip;
     try {
       const apiRequest = Joi.object({
         type: Joi.string().required(),
